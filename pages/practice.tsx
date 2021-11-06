@@ -135,75 +135,24 @@ const Practice: NextPage = () => {
           {!isPlaying ? (
             <>
               <button onClick={() => setPlaying(true)}>Play</button>
-              <button onClick={() => reset()}>Reset</button>
+              <button
+                onClick={() => {
+                  reset();
+                  setHitRate([]);
+                }}
+              >
+                Reset
+              </button>
             </>
           ) : (
             <button onClick={() => setPlaying(false)}>Stop</button>
           )}
         </p>
+        <small>Don't give your opponent free energy!</small>
 
         <div className={styles.grid}>
-          <div
-            className={styles.card}
-            onClick={() => {
-              setQueuedMove(pokemon.fastMove);
-            }}
-          >
-            <h2>You</h2>
-            <p>{pokemon.name}</p>
-            <img
-              style={{ objectFit: "contain" }}
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-            />
-            <div>
-              <small>
-                {pokemon.fastMove.name} ({pokemon.fastMove.turns} turns)
-              </small>
-            </div>
-            <div className={styles.chargedMoves}>
-              {pokemon.chargedMoves.map((chargedMove) => (
-                <button
-                  className={styles.chargedMove}
-                  disabled={energy < chargedMove.energy}
-                  key={chargedMove.name}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setQueuedMove(chargedMove);
-                  }}
-                  style={{
-                    background: `linear-gradient(0deg, green ${
-                      (energy * 100) / chargedMove.energy
-                    }%, lightgrey ${(energy * 100) / chargedMove.energy}%)`,
-                  }}
-                  type="button"
-                >
-                  {chargedMove.name} ({chargedMove.energy})
-                </button>
-              ))}
-            </div>
-            <div
-              style={{
-                height: 10,
-                width: "100%",
-                backgroundColor: "lightgrey",
-              }}
-            >
-              <div
-                style={{
-                  height: 10,
-                  width: `${energy}%`,
-                  backgroundColor: "green",
-                  fontSize: 8,
-                  transition: "width 0.5s",
-                }}
-              >
-                {energy}
-              </div>
-            </div>
-          </div>
-
           <div className={styles.card}>
-            <h2>Opponent</h2>
+            {/* <h2>Opponent</h2> */}
             <p>{opponent.name}</p>
             <img
               style={{ objectFit: "contain" }}
@@ -214,7 +163,7 @@ const Practice: NextPage = () => {
                 {opponent.fastMove.name} ({opponent.fastMove.turns} turns)
               </small>
             </div>
-            <div className={styles.chargedMoves}>
+            {/* <div className={styles.chargedMoves}>
               {opponent.chargedMoves.map((chargedMove) => (
                 <button
                   className={styles.chargedMove}
@@ -233,12 +182,13 @@ const Practice: NextPage = () => {
                   {chargedMove.name} ({chargedMove.energy})
                 </button>
               ))}
-            </div>
+            </div> */}
             <div
               style={{
                 height: 10,
                 width: "100%",
                 backgroundColor: "lightgrey",
+                borderRadius: 5,
               }}
             >
               <div
@@ -246,11 +196,77 @@ const Practice: NextPage = () => {
                   height: 10,
                   width: `${oppoEnergy}%`,
                   backgroundColor: "green",
+                  borderRadius: 5,
                   fontSize: 8,
                   transition: "width 0.5s",
                 }}
               >
                 {round(oppoEnergy)}
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={
+              styles.card +
+              "  " +
+              (queuedMove?.type === "charged" ? styles.chargeQueued : "")
+            }
+            onClick={() => {
+              if (!queuedMove) setQueuedMove(pokemon.fastMove);
+            }}
+          >
+            {/* <h2>You</h2> */}
+            <p>{pokemon.name}</p>
+            <img
+              style={{ objectFit: "contain" }}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+            />
+            <div>
+              <small>
+                {pokemon.fastMove.name} ({pokemon.fastMove.turns} turns)
+              </small>
+            </div>
+            <div className={styles.chargedMoves}>
+              {pokemon.chargedMoves.map((chargedMove) => (
+                <button
+                  className={styles.chargedMove}
+                  disabled={energy < chargedMove.energy}
+                  key={chargedMove.name}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (!queuedMove) setQueuedMove(chargedMove);
+                  }}
+                  style={{
+                    background: `linear-gradient(0deg, green ${
+                      (energy * 100) / chargedMove.energy
+                    }%, lightgrey ${(energy * 100) / chargedMove.energy}%)`,
+                  }}
+                  type="button"
+                >
+                  {chargedMove.name} ({chargedMove.energy})
+                </button>
+              ))}
+            </div>
+            <div
+              style={{
+                height: 10,
+                width: "100%",
+                backgroundColor: "lightgrey",
+                borderRadius: 5,
+              }}
+            >
+              <div
+                style={{
+                  height: 10,
+                  width: `${energy}%`,
+                  backgroundColor: "green",
+                  borderRadius: 5,
+                  fontSize: 8,
+                  transition: "width 0.5s",
+                }}
+              >
+                {energy}
               </div>
             </div>
           </div>
