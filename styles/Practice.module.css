@@ -130,8 +130,8 @@
 .chargedMove {
   border: none;
   border-radius: 50%;
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
 }
 
 @keyframes pulse {

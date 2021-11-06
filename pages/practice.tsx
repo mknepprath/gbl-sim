@@ -197,7 +197,9 @@ const Practice: NextPage = () => {
                   width: `${oppoEnergy}%`,
                   backgroundColor: "green",
                   borderRadius: 5,
+                  color: "white",
                   fontSize: 8,
+                  paddingLeft: 2,
                   transition: "width 0.5s",
                 }}
               >
@@ -262,7 +264,9 @@ const Practice: NextPage = () => {
                   width: `${energy}%`,
                   backgroundColor: "green",
                   borderRadius: 5,
+                  color: "white",
                   fontSize: 8,
+                  paddingLeft: 2,
                   transition: "width 0.5s",
                 }}
               >
