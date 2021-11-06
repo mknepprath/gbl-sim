@@ -1,5 +1,5 @@
 .container {
-  border: 20px solid white;
+  border: 10px solid white;
   padding: 0 2rem;
   user-select: none;
 }
@@ -9,8 +9,7 @@
 }
 
 .main {
-  min-height: calc(100vh - 40px); /* Due to 20px border */
-  padding: 1rem 0;
+  min-height: calc(100vh - 20px); /* Due to 20px border */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -57,15 +56,16 @@
 }
 
 .description {
-  line-height: 1.5;
-  font-size: 1.5rem;
+  line-height: 1;
+  font-size: 1rem;
+  margin: 0.5rem 0;
 }
 
 .code {
   background: #fafafa;
   border-radius: 5px;
   padding: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 0.75rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
@@ -76,8 +76,6 @@
 }
 
 .grid {
-  margin-bottom: 16px;
-
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
@@ -138,9 +136,9 @@
 
 @keyframes pulse {
   from {
-    border: 20px solid green;
+    border: 10px solid green;
   }
   to {
-    border: 20px solid white;
+    border: 10px solid white;
   }
 }

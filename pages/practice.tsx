@@ -148,7 +148,7 @@ const Practice: NextPage = () => {
             <button onClick={() => setPlaying(false)}>Stop</button>
           )}
         </p>
-        <small>Don&apos;t give your opponent free energy!</small>
+        {/* <small>Don&apos;t give your opponent free energy!</small> */}
 
         <div className={styles.grid}>
           <div className={styles.card}>
@@ -271,7 +271,7 @@ const Practice: NextPage = () => {
             </div>
           </div>
         </div>
-        <p>
+        <p className={styles.description}>
           Hit Rate:{" "}
           {hitRate.length
             ? round(
