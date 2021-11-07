@@ -239,8 +239,22 @@ const Practice: NextPage = () => {
               if (!queuedMove) setQueuedMove(pokemon.fastMove);
             }}
           >
-            {/* <h2>You</h2> */}
-            <p>{pokemon.name}</p>
+            <select
+              onChange={(event) =>
+                setPokemon(getPokemonBySpeciesId(event.target.value))
+              }
+              value={pokemon.speciesId}
+            >
+              {KANTO.map((p) => (
+                <option
+                  key={p.speciesId}
+                  selected={pokemon.speciesId === p.speciesId}
+                  value={p.speciesId}
+                >
+                  {p.speciesName}
+                </option>
+              ))}
+            </select>
             <img
               style={{ objectFit: "contain" }}
               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}

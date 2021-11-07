@@ -39,5 +39,6 @@ export function getPokemonBySpeciesId(speciesId: string): Pokemon {
         type: "charged" as ChargedMove["type"],
       },
     ],
+    speciesId,
   };
 }

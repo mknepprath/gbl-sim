@@ -79,4 +79,5 @@ interface Pokemon {
   name: string;
   fastMove: FastMove;
   chargedMoves: ChargedMove[];
+  speciesId: string;
 }
