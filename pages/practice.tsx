@@ -240,9 +240,10 @@ const Practice: NextPage = () => {
             }}
           >
             <select
-              onChange={(event) =>
-                setPokemon(getPokemonBySpeciesId(event.target.value))
-              }
+              onChange={(event) => {
+                event.stopPropagation();
+                setPokemon(getPokemonBySpeciesId(event.target.value));
+              }}
               value={pokemon.speciesId}
             >
               {KANTO.map((p) => (
