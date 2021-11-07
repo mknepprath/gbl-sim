@@ -248,7 +248,7 @@ const Practice: NextPage = () => {
             </div>
             <div className={styles.chargedMoves}>
               {pokemon.chargedMoves.map((chargedMove: ChargedMove) => (
-                <div>
+                <div key={chargedMove.name}>
                   <small>
                     {chargedMove.name} ({chargedMove.energy})
                   </small>
@@ -258,7 +258,6 @@ const Practice: NextPage = () => {
                       energy < chargedMove.energy ||
                       queuedMove?.type === "charged"
                     }
-                    key={chargedMove.name}
                     onClick={(event) => {
                       event.stopPropagation();
                       if (!queuedMove) setQueuedMove(chargedMove);
