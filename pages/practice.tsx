@@ -344,7 +344,7 @@ const Practice: NextPage = () => {
         closeOnClick
         hideProgressBar
         limit={1}
-        position="top-center"
+        position="bottom-center"
         transition={Slide}
       />
     </div>
