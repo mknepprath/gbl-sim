@@ -232,6 +232,7 @@ const Practice: NextPage = () => {
               (queuedMove?.type === "charged" ? styles.chargeQueued : "")
             }
             onClick={() => {
+              if (!isPlaying) setPlaying(true);
               if (!queuedMove) setQueuedMove(pokemon.fastMove);
             }}
           >
@@ -342,6 +343,7 @@ const Practice: NextPage = () => {
         autoClose={1000}
         closeOnClick
         hideProgressBar
+        limit={1}
         position="top-center"
         transition={Slide}
       />
