@@ -9,6 +9,7 @@ import KANTO from "../kanto.json";
 
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/Practice.module.css";
+import useMousePosition from "../hooks/use-mouse-position";
 
 const round = (n: number) => Math.round(n * 100) / 100;
 
@@ -26,6 +27,8 @@ const Practice: NextPage = () => {
   );
 
   const [hitRate, setHitRate] = useState<string[]>([]);
+
+  const mousePosition = useMousePosition();
 
   useEffect(() => {
     setPokemon(getPokemonBySpeciesId("nidoqueen_shadow"));
@@ -346,6 +349,20 @@ const Practice: NextPage = () => {
         limit={1}
         position="bottom-center"
         transition={Slide}
+      />
+      <div
+        style={{
+          border: mousePosition.buttons ? "3px solid grey" : "0px solid white",
+          borderRadius: 20,
+          position: "absolute",
+          top: mousePosition.y - 20,
+          left: mousePosition.x - 20,
+          height: 40,
+          width: 40,
+          opacity: 0.8,
+          transition: "border 0.1s ease-out",
+          pointerEvents: "none",
+        }}
       />
     </div>
   ) : null;
