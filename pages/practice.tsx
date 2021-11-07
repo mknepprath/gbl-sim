@@ -233,7 +233,10 @@ const Practice: NextPage = () => {
               {pokemon.chargedMoves.map((chargedMove) => (
                 <button
                   className={styles.chargedMove}
-                  disabled={energy < chargedMove.energy}
+                  disabled={
+                    energy < chargedMove.energy ||
+                    queuedMove?.type === "charged"
+                  }
                   key={chargedMove.name}
                   onClick={(event) => {
                     event.stopPropagation();
