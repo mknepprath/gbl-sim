@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import type { NextPage } from "next";
 import Head from "next/head";
 
 import useInterval from "../hooks/use-interval";
 import { getPokemonBySpeciesId, TURN_MS } from "../components/utils";
 import KANTO from "../kanto.json";
+
+import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/Practice.module.css";
 
 const round = (n: number) => Math.round(n * 100) / 100;
@@ -32,6 +35,8 @@ const Practice: NextPage = () => {
       )
     );
   }, []);
+
+  const notify = (message: string) => toast(message);
 
   let throwTurn = 0;
   let turnsToAlignment = 1;
@@ -68,6 +73,14 @@ const Practice: NextPage = () => {
     () => {
       if (pokemon && opponent) {
         setCount(count + 1);
+
+        if (count === turnsToAlignment) {
+          notify("ALIGNED");
+        }
+        if (count === throwTurn - pokemon.fastMove.turns) {
+          notify("THROW");
+        }
+
         if (count % pokemon.fastMove.turns === 0) {
           switch (queuedMove?.type) {
             case "fast":
@@ -87,8 +100,10 @@ const Practice: NextPage = () => {
         if (throwTurn === count) {
           if (queuedMove?.type === "charged") {
             setHitRate(["GOT IT", ...hitRate]);
+            notify("GOT IT");
           } else {
             setHitRate(["MISS", ...hitRate]);
+            notify("MISS");
           }
           reset();
           setOpponent(
@@ -200,7 +215,9 @@ const Practice: NextPage = () => {
                   color: "white",
                   fontSize: 8,
                   paddingLeft: 2,
-                  transition: "width 0.5s",
+                  transition: `width ${
+                    opponent.fastMove.turns * TURN_MS
+                  }ms cubic-bezier(1.000, -0.125, 0.770, 0.990)`,
                 }}
               >
                 {round(oppoEnergy)}
@@ -230,27 +247,57 @@ const Practice: NextPage = () => {
               </small>
             </div>
             <div className={styles.chargedMoves}>
-              {pokemon.chargedMoves.map((chargedMove) => (
-                <button
-                  className={styles.chargedMove}
-                  disabled={
-                    energy < chargedMove.energy ||
-                    queuedMove?.type === "charged"
-                  }
-                  key={chargedMove.name}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    if (!queuedMove) setQueuedMove(chargedMove);
-                  }}
-                  style={{
-                    background: `linear-gradient(0deg, green ${
-                      (energy * 100) / chargedMove.energy
-                    }%, lightgrey ${(energy * 100) / chargedMove.energy}%)`,
-                  }}
-                  type="button"
-                >
-                  {chargedMove.name} ({chargedMove.energy})
-                </button>
+              {pokemon.chargedMoves.map((chargedMove: ChargedMove) => (
+                <div>
+                  <small>
+                    {chargedMove.name} ({chargedMove.energy})
+                  </small>
+                  <button
+                    className={styles.chargedMove}
+                    disabled={
+                      energy < chargedMove.energy ||
+                      queuedMove?.type === "charged"
+                    }
+                    key={chargedMove.name}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (!queuedMove) setQueuedMove(chargedMove);
+                    }}
+                    style={{
+                      background: `linear-gradient(0deg, green ${
+                        (energy * 100) / chargedMove.energy
+                      }%, lightgrey ${(energy * 100) / chargedMove.energy}%)`,
+                      border:
+                        energy < chargedMove.energy
+                          ? "0px solid white"
+                          : "4px solid white",
+                      opacity:
+                        energy < chargedMove.energy ||
+                        queuedMove?.type === "charged"
+                          ? 0.3
+                          : 1,
+                      pointerEvents:
+                        energy < chargedMove.energy ||
+                        queuedMove?.type === "charged"
+                          ? "none"
+                          : "auto",
+                    }}
+                    type="button"
+                  >
+                    <div
+                      style={{
+                        background: "green",
+                        height: `${(energy * 100) / chargedMove.energy}%`, // 7 / 35 ... x% / 100%
+                        width: "100%",
+                        position: "absolute",
+                        bottom: 0,
+                        transition: `height ${
+                          pokemon.fastMove.turns * TURN_MS
+                        }ms cubic-bezier(1.000, -0.125, 0.770, 0.990)`,
+                      }}
+                    />
+                  </button>
+                </div>
               ))}
             </div>
             <div
@@ -270,7 +317,9 @@ const Practice: NextPage = () => {
                   color: "white",
                   fontSize: 8,
                   paddingLeft: 2,
-                  transition: "width 0.5s",
+                  transition: `width ${
+                    pokemon.fastMove.turns * TURN_MS
+                  }ms cubic-bezier(1.000, -0.125, 0.770, 0.990)`,
                 }}
               >
                 {energy}
@@ -290,6 +339,13 @@ const Practice: NextPage = () => {
           %
         </p>
       </main>
+      <ToastContainer
+        autoClose={1000}
+        closeOnClick
+        hideProgressBar
+        position="top-center"
+        transition={Slide}
+      />
     </div>
   ) : null;
 };
